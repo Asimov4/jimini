@@ -56,7 +56,7 @@
 	    {% endif %}
 	    
 	    <!-- These are the secondary origami pics for each origami profile - when user clicks we should rotate out the main -->
-            <div class="secondaryOrigamiPics"
+            <div class="secondaryOrigamiPics">
 		 {% for image in origami.get_pictures %}
 		 <a href='/choose_origami.html/{{origami.id}}/{{image.id}}'><img src='{{ image.picture.url }}'/></a>
 		 {% endfor %}
