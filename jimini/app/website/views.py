@@ -288,20 +288,15 @@ def confirmation(request, order_id):
 	order.city = physicalDestination.City
 	order.state = physicalDestination.StateOrRegion
 	order.zip_code = physicalDestination.PostalCode
-	order.save()
-	
+	# Added buyer name and email to Order model
+	order.buyer_name = buyer.Name
+	order.buyer_email = buyer.Email
 	# Change order_status to 'paid'
 	order.order_status = 'paid'
 	order.save()
-
-	# Send order confirmation email
-	first_name = buyer.Name
-	email_to = buyer.Email
-
-	origami_price = origami.price
-	origami_title = origami.title
 	
-	order.confirmation_email(first_name, email_to, origami_price, origami_title)
+	# Send order confirmation email to buyer
+	order.confirmation_email(origami.price, origami.title)
 
 	return render_to_response('confirmation.html',{'order':order},
 							   context_instance=RequestContext(request))
