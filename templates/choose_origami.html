@@ -26,19 +26,17 @@
      <img class='workflowSteps_grey' src='{% static "website_parts/homepage/step4_half.png" %}'/>
 </div>
 
-
 <!-- This is the top origami band that shows the various origamis to choose from --> 
-        <div class="origamiDisplay">
+        <div class="origamiDisplay" style="cursor: pointer">
 	  {% for origami in origamis %}
-          <a class="smallOrigamiLink" href="/choose_origami.html/{{ origami.id }}"><img class="smallOrigamiBlock" src="{{ origami.get_pictures.0.picture.url }}"/></a>
+          <a class="smallOrigamiLink" onClick="display({{ origami.id }})"><img class="smallOrigamiBlock" src="{{ origami.get_pictures.0.picture.url }}"/></a>
           {% endfor %}
         </div>
-
 
 <!-- This is the large description of each origmi that we will animate with javascript -->	
 	<div class='singleOrigamiList'>
 	  {% for origami in origamis %}
-	  <div class="singleOrigamiView">
+	  <div class="singleOrigamiView" id="{{ origami.id }}">
             <a class="OrigamiLink" href='/choose_origami.html/{{origami.id}}'><img class="bigOrigamiPic" src='{{ origami.get_pictures.0.picture.url }}'/></a>
             <h1 class="origamiTitle">{{ origami.title }}</h1>
             <h2>Price: ${{ origami.price }}</h2>
@@ -65,5 +63,13 @@
 	  </div><!-- This is the end of the singleOrigamiView div -->
 	  {% endfor %}
 	</div><!--This is the end of the singleOrigamiList container div-->
+
+<script type='text/javascript'>
+    function display(id) {
+        $('.singleOrigamiView').hide();
+        $('#' + id).show(); 
+    }
+    display({{ origami_id }});
+</script>
 
 {% endblock %}
