@@ -92,7 +92,7 @@ def mail_cron(request):
 				order.gift_received_email(origami_price, origami_title)
 
 				# Forward Amazon, Google, etc. gift receipt email                                                                                                 
-				check_mail.forward_email(msg, email_to)
+				check_mail.forward_email(msg, order.buyer_email)
 
         # Logout                                                                                                                                                                                     
         server.close()

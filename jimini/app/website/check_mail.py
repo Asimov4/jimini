@@ -1,5 +1,4 @@
 from email.mime.text import MIMEText
-
 import smtplib, imaplib
 import email
 from subprocess import Popen, PIPE
@@ -10,29 +9,14 @@ import sendmail
 
 app_dir = os.path.dirname(__file__) # get current directory 
 
-''' Need help here - import existing Django models '''
-#sys.path.append("/Users/bfortuner/workplace/jimini/jimini/jimini")
-#os.environ["DJANGO_SETTINGS_MODULE"] = settings
-#from models import Order, Origami, OrigamiImage, RecipientShippingForm
-
-
 # Load Jinja email templates
 template_dir = os.path.join(app_dir, '../../../templates/email_templates')
 loader = FileSystemLoader(template_dir)
 env = Environment(loader=loader)
 
-# Temporary login info for personal gmail account                                                                                                                                                   
-#username = 'bfortuner' #'cricket@jimini.co'                                                                                                                                                          
-#password = 'brendan90' #'Cricket@SW2012'                                                                                                                                                            
+# Login info for jimini account                                                                                                                                                   
 username = 'cricket@jimini.co'
 password = 'Cricket@SW2012'
-
-# Temporary overrides for testing                                                                                                                                                                  
-#email_from = 'cricket@jimini.co'
-#email_to = 'bfortuner@gmail.com'
-#subject = "Your Jimini Order!"
-#html = "hey man whats up"
-
 
 def connect_email_server():
 	''' Helper function that connects to email server '''
@@ -46,7 +30,6 @@ def connect_email_server():
 
 def forward_email(msg, to_email):
 	''' Forward gift email received from Amazon or Google'''
-	print 'forwarding...'
 	for part in msg.walk():
 		if part.get_content_type() == 'text/html':
 			body = part.get_payload(decode=True)
@@ -56,7 +39,7 @@ def forward_email(msg, to_email):
 
 
 def check_inbox(server):
-
+	''' Checks jimini.co mail server for unread messages sent to jimini'''
 	# Select "INBOX" mailbox
 	typ, data = server.select("INBOX")
 	
