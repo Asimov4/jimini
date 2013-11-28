@@ -144,12 +144,14 @@ def choose_recipient(request, origami_id, order_id=None):
 			city = ""
 			state = ""
 			zip_code = ""
+			buyer_name = ""
+			buyer_email =""
 			
 			# If the user is submitting the form for the first time, add the data to the db
 			if order_id == None:
 				order = Order(amazonOrderReferenceId=amazonOrderReferenceId, origami_id=origami_id, order_status='pre-payment', email_code=gen_email_code(), 
 						  recipient_name=recipient_name, sender_name=sender_name, message=message, ship_to_name=ship_to_name, 
-						  ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code)
+						  ship_to_address=ship_to_address, city=city, state=state, zip_code=zip_code, buyer_name=buyer_name, buyer_email=buyer_email)
 				order.save()
 
 			# otherwise update the data in the db
@@ -288,7 +290,7 @@ def confirmation(request, order_id):
 	order.city = physicalDestination.City
 	order.state = physicalDestination.StateOrRegion
 	order.zip_code = physicalDestination.PostalCode
-	# Added buyer name and email to Order model
+	# Add buyer name and email to Order model
 	order.buyer_name = buyer.Name
 	order.buyer_email = buyer.Email
 	# Change order_status to 'paid'
