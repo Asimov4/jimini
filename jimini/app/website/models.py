@@ -90,30 +90,33 @@ class Order(models.Model):
 	state = models.CharField(max_length=2)
 	zip_code = models.CharField(max_length=20)
 
+	buyer_name = models.CharField(max_length=100)
+	buyer_email = models.CharField(max_length=200)
 
-	def confirmation_email(self, first_name, email_to, origami_price, origami_title):
+
+	def confirmation_email(self, origami_price, origami_title):
 		template = env.get_template('order_confirm.html')
-		html = template.render(first_name=first_name, email_code=self.email_code, origami_price=origami_price, origami_title=origami_title)
+		html = template.render(first_name=self.buyer_name, email_code=self.email_code, origami_price=origami_price, origami_title=origami_title)
 		email_from = 'confirmation@jimini.co'
 		subject = "Your Jimini Order!"
 
-		sendmail.send_jimini_email(email_from, email_to, subject, html)
+		sendmail.send_jimini_email(email_from, self.buyer_email, subject, html)
 
 
-	def gift_received_email(self, first_name, email_to, origami_price, origami_title):
+	def gift_received_email(self, origami_price, origami_title):
 		template = env.get_template('digital_gift_received.html')
-		html = template.render(first_name=first_name, email_code=self.email_code, origami_price=origami_price, origami_title=origami_title)
+		html = template.render(first_name=self.buyer_name, email_code=self.email_code, origami_price=origami_price, origami_title=origami_title)
 		email_from = 'confirmation@jimini.co'
 		subject = "We Received Your Digital Gift!"
 
-		sendmail.send_jimini_email(email_from, email_to, subject, html)
+		sendmail.send_jimini_email(email_from, self.buyer_email, subject, html)
 
 
 	def origami_shipped_email(self):
 		template = env.get_template('origami_shipped.html')
-		html = template.render(first_name=first_name)
+		html = template.render(first_name=self.buyer_name)
 		email_from = 'confirmation@jimini.co'
 		subject = "Your Jimini Order Has Shipped!"
 
-		sendmail.send_jimini_email(email_from, email_to, subject, html)
+		sendmail.send_jimini_email(email_from, self.buyer_email, subject, html)
 
