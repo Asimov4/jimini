@@ -16,7 +16,6 @@ import pprint
 import check_mail
 import re
 
-
 MWS_ACCESS_KEY = "AKIAJXQZJU2XOOX326JQ"
 MWS_SECRET_KEY = "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"
 MWS_SELLER_ID = "A2OSAYU8Y178Y0"
@@ -63,10 +62,7 @@ def mail_cron(request):
 
 		for msg in email_list:
 			# Extract email-code from 'to' header
-			jimini_code = re.search(r'([A-Za-z0-9]+)@', msg['to']).group(1)
-
-			# TEMPORARY: fake email code for testing purposes
-			jimini_code = 'smelly-socks'
+			jimini_code = re.search(r'([A-z0-9]+-[A-z0-9]+)@', msg['to']).group(1)
 
 			# Search for email-code in Orders table
 			try:
@@ -75,9 +71,9 @@ def mail_cron(request):
 				order = None
 
 			# If order match found...
-                        if order != None:
+			if order != None:
 				# Update order status to 'gift received'                                                                                                                          
-                                order.order_status = 'Gift Received'
+				order.order_status = 'Gift Received'
 				order.save()                                                                                                                       
 
 				# Get Amazon order_id - actually might not need this
